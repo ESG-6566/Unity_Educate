@@ -29,17 +29,15 @@ public class PlayerMove : MonoBehaviour
         if (!input.Player.Move.IsPressed()) return;
 
         Vector2 inputValue = input.Player.Move.ReadValue<Vector2>();
-        Vector3 currentPosition = transform.position;
-        float timeAndSpeed = Time.deltaTime * speed;
-        float newX = currentPosition.x + inputValue.x * timeAndSpeed;
-        float newZ = currentPosition.z + inputValue.y * timeAndSpeed;
-        Vector3 newPosition = new Vector3(newX, currentPosition.y, newZ);
-        transform.position = newPosition;
 
         float radians = Mathf.Atan2(inputValue.x, inputValue.y);
         Vector3 camEuler = Camera.main.transform.eulerAngles;
         float angle = radians * Mathf.Rad2Deg + camEuler.y;
         transform.rotation = Quaternion.Euler(0, angle, 0);
+
+        float timeAndSpeed = Time.deltaTime * speed;
+        Vector3 forwardMove = transform.forward * timeAndSpeed;
+        transform.position += forwardMove;
 
     }
 }
