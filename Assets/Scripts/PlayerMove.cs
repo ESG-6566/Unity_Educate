@@ -6,11 +6,14 @@ public class PlayerMove : MonoBehaviour
     [Range(0f, 100f)]
     [SerializeField] float speed = 5f;
     private InputSystem_Actions input;
+    private Rigidbody rb;
 
     void Awake()
     {
         input = new InputSystem_Actions();
         input.Enable();
+
+        rb = GetComponent<Rigidbody>();
     }
 
     void Start()
@@ -18,8 +21,12 @@ public class PlayerMove : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
+    {
+
+    }
+
+    void FixedUpdate()
     {
         Move();
     }
@@ -35,9 +42,8 @@ public class PlayerMove : MonoBehaviour
         float angle = radians * Mathf.Rad2Deg + camEuler.y;
         transform.rotation = Quaternion.Euler(0, angle, 0);
 
-        float timeAndSpeed = Time.deltaTime * speed;
+        float timeAndSpeed = Time.fixedDeltaTime * speed;
         Vector3 forwardMove = transform.forward * timeAndSpeed;
-        transform.position += forwardMove;
-
+        rb.position += forwardMove;
     }
 }
