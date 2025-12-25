@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
     [Range(0f, 100f)]
-    [SerializeField] float speed = 5f;
+    [SerializeField] private float speed = 5f;
+    [Range(0f, 15f)]
+    [SerializeField] private float jumpForce = 5f;
     private InputSystem_Actions input;
     private Rigidbody rb;
 
@@ -12,6 +15,7 @@ public class PlayerMove : MonoBehaviour
     {
         input = new InputSystem_Actions();
         input.Enable();
+        input.Player.Jump.performed += Jump;
 
         rb = GetComponent<Rigidbody>();
     }
@@ -31,6 +35,12 @@ public class PlayerMove : MonoBehaviour
         Move();
     }
 
+    private void Jump(InputAction.CallbackContext context)
+    {
+        Vector3 newVeclocity = rb.velocity;
+        newVeclocity.y = jumpForce;
+        rb.velocity = newVeclocity;
+    }
     private void Move()
     {
         if (!input.Player.Move.IsPressed()) return;
