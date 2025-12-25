@@ -1,9 +1,22 @@
-# حرکت با RigidBody ⚛️
+# 1. تعریف میزان پرش
+```csharp
+    [Range(0f, 15f)]
+    [SerializeField] float jumpForce = 5f;
+```
+<img src="jump-force-in-editor.jpg"/>
 
-در این کد انجام حرکت را از transform به RigidBody انتقال می دهیم.
+# 2. نوشتن تابع پرش
 
-در واقع حرکت دارد با فیزیک کاراتر انجام می شود.
+```csharp
+private void Jump(InputAction.CallbackContext context)
+    {
+        Vector3 newVeclocity = rb.linearVelocity;
+        newVeclocity.y = jumpForce;
+        rb.linearVelocity = newVeclocity;
+    }
+```
+# 3. اضافه کردن به ورودی(input)
 
-تابع FixedUpdate و Time.FixedDeltaTime همراه برا فیزیک بازی اجرا می شوند.
-
-در نتیجه کاراکتر برخورد بهتری با اجسام داخل بازی دارد.
+```csharp
+input.Player.Jump.performed += Jump;
+```
